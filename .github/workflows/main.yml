@@ -88,9 +88,9 @@ jobs:
     - name: Run tests
       run: make test-containers-test "CEPH_VERSION=${{ matrix.ceph_version }}" "GO_VERSION=${{ matrix.go_version }}" "RESULTS_DIR=$PWD/_results"
     # Enable tmate debugging of manually-triggered workflows if the input option was provided
-    - name: Setup tmate session
+    - name: Setup tmate session to debug
+      if: ${{ failure() }}
       uses: mxschmitt/action-tmate@v3
-      if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
     - name: Clean up test containers
       if: always()
       run: make test-containers-clean "CEPH_VERSION=${{ matrix.ceph_version }}"
